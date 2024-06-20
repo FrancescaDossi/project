@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blocco Note</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <nav class="navbar">
+        <ul>
+            <li><a href='/'>Home</a></li>
+            <li><a href='/about'>About</a></li>
+            <li><a href='/excuses'>Excuses</a></li>
+            <li><a href='/exercises'>Excercises</a></li>
+            <li><a href='/memories'>Good Memories</a></li>
+        </ul>
+    </nav>
+
+</head>
+<body>
+
+<div class="container">
+    <h1>Blocco Note</h1>
+    <div class="input-row">
+        <input type="text" id="dataInput" placeholder="GG/MM/AAAA">
+        <input type="text" id="contentInput" placeholder="Inserisci il contenuto">
+        <button id="submitButton">Submit</button>
+    </div>
+    <div class="grid" id="grid">
+        <!-- Grid Header -->
+        <div class="row header">
+            <div class="item">Date</div>
+            <div class="item">To do </div>
+            <div class="item">Done</div>
+            <div class="item">Delete</div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Function to set data in localStorage
+    function setDataInStorage(key, data) {
+        localStorage.setItem(key, JSON.stringify(data));
+    }
+
+    // Function to retrieve data from localStorage
+    function getDataFromStorage(key) {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : [];
+    }
+
+    const grid = document.getElementById('grid');
+
+    // Set the notes data from localStorage
+    var storedNotesData = getDataFromStorage("notesData");
+    storedNotesData.forEach(function (note) {
+        var newRow = document.createElement('div');
+        newRow.classList.add('row');
+
+        const dataItem = document.createElement('div');
+        dataItem.classList.add('item');
+        dataItem.textContent = note.date;
+
+        const contentItem = document.createElement('div');
+        contentItem.classList.add('item');
+        contentItem.textContent = note.content;
+
+        const completedItem = document.createElement('div');
+        completedItem.classList.add('item');
+        const completedCheckbox = document.createElement('input');
+        completedCheckbox.setAttribute('type', 'checkbox');
+        completedCheckbox.checked = note.completed;
+        completedItem.appendChild(completedCheckbox);
+
+        const deleteItem = document.createElement('div');
+        deleteItem.classList.add('item');
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', function() {
+            newRow.remove();
+            // Update the notes data in localStorage after deletion
+            var notesData = getDataFromStorage("notesData");
+            const index = notesData.findIndex(item => item.date === note.date && item.content === note.content);
+            if (index !== -1) {
+                notesData.splice(index, 1);
+                setDataInStorage("notesData", notesData);
+            }
+        });
+        deleteItem.appendChild(deleteButton);
+
+        newRow.appendChild(dataItem);
+        newRow.appendChild(contentItem);
+        newRow.appendChild(completedItem);
+        newRow.appendChild(deleteItem);
+
+        grid.appendChild(newRow);
+    });
+
+    const submitButton = document.getElementById('submitButton');
+    submitButton.addEventListener('click', function() {
+        const dataInput = document.getElementById('dataInput').value;
+        const contentInput = document.getElementById('contentInput').value;
+
+        const newRow = document.createElement('div');
+        newRow.classList.add('row');
+
+        const dataItem = document.createElement('div');
+        dataItem.classList.add('item');
+        dataItem.textContent = dataInput;
+
+        const contentItem = document.createElement('div');
+        contentItem.classList.add('item');
+        contentItem.textContent = contentInput;
+
+        const completedItem = document.createElement('div');
+        completedItem.classList.add('item');
+        const completedCheckbox = document.createElement('input');
+        completedCheckbox.setAttribute('type', 'checkbox');
+        completedItem.appendChild(completedCheckbox);
+
+        const deleteItem = document.createElement('div');
+        deleteItem.classList.add('item');
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Elimina';
+        deleteButton.addEventListener('click', function() {
+            newRow.remove();
+        });
+        deleteItem.appendChild(deleteButton);
+
+        newRow.appendChild(dataItem);
+        newRow.appendChild(contentItem);
+        newRow.appendChild(completedItem);
+        newRow.appendChild(deleteItem);
+
+        grid.appendChild(newRow);
+
+        // Update the notes data in localStorage after addition
+        var notesData = getDataFromStorage("notesData");
+        notesData.push({ date: dataInput, content: contentInput, completed: false });
+        setDataInStorage("notesData", notesData);
+
+        // Clear input fields
+        document.getElementById('dataInput').value = '';
+        document.getElementById('contentInput').value = '';
+    });
+});
+</script>
+
+</body>
+</html>

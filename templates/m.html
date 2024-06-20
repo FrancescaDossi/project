@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Good Memories</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <nav class="navbar">
+        <ul>
+            <li><a href='/'>Home</a></li>
+            <li><a href='/about'>About</a></li>
+            <li><a href='/excuses'>Excuses</a></li>
+            <li><a href='/notes'>Notes</a></li>
+            <li><a href='/exercises'>Exercises</a></li>
+        </ul>
+    </nav>
+    <h1>How are you feeling?</h1>
+</head>
+<body>
+    <div class="button-containerm">
+        <div class="button-wrapperm">
+            <button id="Happybutton">Happy</button>
+        </div>
+        <div class="button-wrapperm">
+            <button id="Sadbutton">Sad</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("Happybutton").addEventListener("click", function() {
+            window.location.href = "/happy";
+        });
+
+        document.getElementById("Sadbutton").addEventListener("click", function() {
+            window.location.href = "/sad";
+        });
+    </script>
+</body>
+</html>

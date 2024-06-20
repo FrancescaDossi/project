@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href='/'>Home</a></li>
+            <li><a href='/happy'>Happy</a></li>
+            <li><a href='/sad'>Sad</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1 class='headline'>What made you feel happy today? </h1>
+        <div class="memory-section">
+            <div class='button-container'>
+                <button id="workmemoryButton">Submit a happy memory from the workplace</button>
+            </div>
+            <div id="workMemoryForm" style="display:none;">
+                <input type="text" id="workMemoryInput" placeholder="Enter your work memory">
+                <button id="submitWorkMemoryButton">Submit</button>
+            </div>
+        </div>
+
+        <div class="memory-section">
+            <div class='button-container'>
+                <button id="othermemoryButton">Submit a happy memory from another place</button>
+            </div>
+            <div id="otherMemoryForm" style="display:none;">
+                <input type="text" id="otherMemoryInput" placeholder="Enter your other memory">
+                <button id="submitOtherMemoryButton">Submit</button>
+            </div>
+        </div>
+
+        <div id="responseMessage"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#workmemoryButton').click(function() {
+                $('#workMemoryForm').toggle();
+            });
+
+            $('#othermemoryButton').click(function() {
+                $('#otherMemoryForm').toggle();
+            });
+
+            $('#submitWorkMemoryButton').click(function() {
+                const memory = $('#workMemoryInput').val();
+                const easterEggSentence = 'Esame di Stato di terza media 2024!';
+                const easterEggResponse = '22/06/2024, 8:00-8:40 "LE BUGIE" di Francesca D.';
+
+                if (memory.includes(easterEggSentence)) {
+                    $('#responseMessage').text(easterEggResponse);
+                    $('#workMemoryForm').hide();
+                    $('#workMemoryInput').val('');
+                    setTimeout(function() {
+                        $('#responseMessage').text('');
+                    }, 10000);
+                } else {
+                    $.post('/submit_work_memory', { memory: memory }, function(response) {
+                        $('#responseMessage').text(response.message);
+                        $('#workMemoryForm').hide();
+                        $('#workMemoryInput').val('');
+                        setTimeout(function() {
+                            $('#responseMessage').text('');
+                        }, 3000);
+                    });
+                }
+            });
+
+            $('#submitOtherMemoryButton').click(function() {
+                const otherMemory = $('#otherMemoryInput').val();
+                $.post('/submit_other_memory', { other_memory: otherMemory }, function(response) {
+                    $('#responseMessage').text(response.message);
+                    $('#otherMemoryForm').hide();
+                    $('#otherMemoryInput').val('');
+                    setTimeout(function() {
+                        $('#responseMessage').text('');
+                    }, 3000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

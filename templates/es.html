@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Generator</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <nav class="navbar">
+        <ul>
+            <li><a href='/'>Home</a></li>
+            <li><a href='/about'>About</a></li>
+            <li><a href='/excuses'>Excuses</a></li>
+            <li><a href='/notes'>Notes</a></li>
+            <li><a href='/memories'>Good Memories</a></li>
+        </ul>
+    </nav>
+    <h1>Exercises</h1>
+</head>
+<body>
+    <div class="container">
+        <h2>Generate a random number</h2>
+        <button id="generateButton">Generate Number</button>
+        <div id="generatedNumber"></div>
+
+        <h2>Check your number</h2>
+        <input type="text" id="numberInput" placeholder="Enter your number">
+        <button id="checkButton">Check Number</button>
+        <div id="checkResult"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Function to generate a random number
+            function generateRandomNumber() {
+                $.post('/generate', function(data) {
+                    $('#generatedNumber').text('Generated Number: ' + data.number);
+
+                    setTimeout(function() {
+                        $('#generatedNumber').hide();
+                    }, 8000);
+                });
+            }
+
+            // Event listener for the generate button
+            $('#generateButton').click(function() {
+                generateRandomNumber();
+            });
+
+            // Event listener for the check button
+            $('#checkButton').click(function() {
+                const userNumber = $('#numberInput').val();
+                $.post('/check', { number: userNumber }, function(data) {
+                    $('#checkResult').text('Result: ' + data.result);
+                });
+            });
+        });
+    </script>

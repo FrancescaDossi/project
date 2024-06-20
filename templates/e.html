@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excuses</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Navigation bar -->
+    <nav class="navbar">
+        <ul>
+            <li><a href='/'>Home</a></li> <!-- Make sure the link is correctly mapped -->
+            <li><a href='/about'>Excuses</a></li>
+            <li><a href='/notes'>Notes</a></li>
+            <li><a href='/exercises'>Excercises</a></li>
+            <li><a href='/memories'>Good Memories</a></li>
+        </ul>
+    </nav>
+</head>
+<body>
+
+   <div class="container">
+        <h1>Excuses</h1>
+        <h2>Get excuses</h2>
+        <div class="button-container">
+            <div class="button-wrapper">
+                <button id="workExcuseButton"> Generate "Work" Excuse</button>
+                <div class="excuse" id="workExcuse"></div>
+                <button class="copyButton">Copy</button>
+                <button class="deleteButton1">Delete</button>
+            </div>
+            <div class="button-wrapper">
+                <button id="gooutExcuseButton">Generate "Go out" Excuse</button>
+                <div class="excuse" id="gooutExcuse"></div>
+                <button class="copyButton">Copy</button>
+                <button class="deleteButton1">Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Write down your excuses</h2>
+        <div class="input-row">
+            <input type="text" id="dataInput" placeholder="GG/MM/AAAA">
+            <input type="text" id="personInput" placeholder="Person">
+            <input type="text" id="excuseInput" placeholder="Excuse">
+            <button id="submitButton">Submit</button>
+        </div>
+        <div class="grid" id="grid">
+            <!-- Grid Header -->
+            <div class="row header">
+                <div class="item">Date</div>
+                <div class="item">Person</div>
+                <div class="item">Excuse</div>
+                <div class="item">Delete</div> <!-- New column for delete button -->
+            </div>
+            <!-- Populate grid with stored excuses -->
+            <script>
+                // Function to set data in local storage
+                function setDataInStorage(key, data) {
+                    localStorage.setItem(key, JSON.stringify(data));
+                }
+
+                // Function to retrieve data from local storage
+                function getDataFromStorage(key) {
+                    const data = localStorage.getItem(key);
+                    return data ? JSON.parse(data) : [];
+                }
+
+                $(document).ready(function() {
+                    // Set the stored excuses data
+                    var storedExcuses = getDataFromStorage('excusesData');
+
+                    // Populate the grid with stored excuses
+                    storedExcuses.forEach(function(excuse) {
+                        if (excuse.date && excuse.person && excuse.excuse) {
+                            addExcuseToGrid(excuse.date, excuse.person, excuse.excuse);
+                        }
+                    });
+
+                    // Submit button click event
+                    $('#submitButton').click(function() {
+                        const dataInput = $('#dataInput').val();
+                        const personInput = $('#personInput').val();
+                        const excuseInput = $('#excuseInput').val();
+
+                        // Check if all inputs are provided
+                        if (dataInput && personInput && excuseInput) {
+                            // Add excuse to stored data
+                            storedExcuses.push({
+                                date: dataInput,
+                                person: personInput,
+                                excuse: excuseInput
+                            });
+                            setDataInStorage('excusesData', storedExcuses);
+
+                            // Add excuse to the grid
+                            addExcuseToGrid(dataInput, personInput, excuseInput);
+
+                            // Clear input fields
+                            $('#dataInput').val('');
+                            $('#personInput').val('');
+                            $('#excuseInput').val('');
+                        } else {
+                            alert('Please fill in all fields.');
+                        }
+                    });
+
+                    // Function to add an excuse to the grid
+                    function addExcuseToGrid(date, person, excuse) {
+                        var newRow = $('<div class="row"></div>');
+                        newRow.append('<div class="item">' + date + '</div>');
+                        newRow.append('<div class="item">' + person + '</div>');
+                        newRow.append('<div class="item">' + excuse + '</div>');
+                        newRow.append('<div class="item"><button class="deleteButton">Delete</button></div>');
+                        $('#grid').append(newRow);
+                    }
+
+                    // Copy button click event
+                    $(document).on('click', '.copyButton', function() {
+                        var excuseText = $(this).prev('.excuse').text().trim();
+                        navigator.clipboard.writeText(excuseText); // Copy excuse to clipboard
+                        alert('Excuse copied to clipboard!');
+                    });
+
+                    // Delete button click event
+                    $(document).on('click', '.deleteButton', function() {
+                        $(this).closest('.row').remove(); // Remove excuse from the grid
+
+                        // Remove the corresponding data from storedExcuses
+                        var index = $(this).closest('.row').index();
+                        storedExcuses.splice(index, 1);
+                        setDataInStorage('excusesData', storedExcuses);
+                    });
+                });
+            </script>
+
+        </div>
+    </div>
+
+    <script>
+        // Function to set data in local storage
+        function setDataInStorage(key, data) {
+            localStorage.setItem(key, JSON.stringify(data));
+        }
+
+        // Function to retrieve data from local storage
+        function getDataFromStorage(key) {
+            const data = localStorage.getItem(key);
+            return data ? JSON.parse(data) : [];
+        }
+
+        $(document).ready(function() {
+            // Set the stored excuses data
+            var storedExcuses = getDataFromStorage('excusesData');
+
+            // Event listener for getting work excuse
+            $('#workExcuseButton').click(function() {
+                $.ajax({
+                    url: '/get_work_excuse',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#workExcuse').text(data.excuse); // Display work excuse
+                        // Add the excuse to stored data
+                        storedExcuses.push(data.excuse);
+                        setDataInStorage('excusesData', storedExcuses);
+                    }
+                });
+            });
+
+            // Event listener for getting go out excuse
+            $('#gooutExcuseButton').click(function() {
+                $.ajax({
+                    url: '/get_goout_excuse',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#gooutExcuse').text(data.excuse); // Display go out excuse
+                        // Add the excuse to stored data
+                        storedExcuses.push(data.excuse);
+                        setDataInStorage('excusesData', storedExcuses);
+                    }
+                });
+            });
+
+            // Copy button click event
+            $(document).on('click', '.copyButton', function() {
+                var excuseText = $(this).prev('.excuse').text().trim();
+                navigator.clipboard.writeText(excuseText); // Copy excuse to clipboard
+                alert('Excuse copied to clipboard!');
+            });
+
+            // Delete button click event
+            $(document).on('click', '.deleteButton1', function() {
+                $(this).prevAll('.excuse').text(''); // Clear excuse text
+
+            });
+
+
+        });
+    </script>
+</body>
+</html>
+
+
+

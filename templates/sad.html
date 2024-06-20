@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sad Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href='/'>Home</a></li>
+            <li><a href='/happy'>Happy</a></li>
+            <li><a href='/sad'>Sad</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1 class='headline'>Don't be sad!
+            Don't you remember when...</h1>
+        <div class="memory-section">
+            <div class='button-container'>
+                <button id="getWorkMemory">Get a happy memory from the workplace</button>
+            </div>
+        </div>
+        <div class="memory-section">
+            <div class='button-container'>
+                <button id="getOtherMemory">Get a happy memory from another place</button>
+            </div>
+        </div>
+        <div id="memoryDisplay"></div>
+        <div id="responseMessage"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#getWorkMemory').click(function() {
+                $.get('/get_work_memory', function(response) {
+                    const memoryHTML = `
+                        <div>
+                            Work Memory: ${response.memory}
+                            <button class="deleteWorkMemoryButton" data-id="${response.id}">Delete</button>
+                        </div>`;
+                    $('#memoryDisplay').html(memoryHTML);
+                }).fail(function(xhr, status, error) {
+                    $('#memoryDisplay').text('Error: ' + xhr.responseJSON.message);
+                });
+            });
+
+            $('#getOtherMemory').click(function() {
+                $.get('/get_other_memory', function(response) {
+                    const memoryHTML = `
+                        <div>
+                            Other Memory: ${response.other_memory}
+                            <button class="deleteOtherMemoryButton" data-id="${response.id}">Delete</button>
+                        </div>`;
+                    $('#memoryDisplay').html(memoryHTML);
+                }).fail(function(xhr, status, error) {
+                    $('#memoryDisplay').text('Error: ' + xhr.responseJSON.message);
+                });
+            });
+
+            $('#memoryDisplay').on('click', '.deleteWorkMemoryButton', function() {
+                const memoryId = $(this).data('id');
+                $.ajax({
+                    url: `/delete_work_memory/${memoryId}`,
+                    type: 'DELETE',
+                    success: function(response) {
+                        $('#responseMessage').text(response.message);
+                        $('#memoryDisplay').empty();
+                        setTimeout(function() {
+                            $('#responseMessage').text('');
+                        }, 3000); // 3000 milliseconds = 3 seconds
+                    },
+                    error: function(xhr, status, error) {
+                        $('#responseMessage').text('Error: ' + xhr.responseJSON.message);
+                    }
+                });
+            });
+
+            $('#memoryDisplay').on('click', '.deleteOtherMemoryButton', function() {
+                const memoryId = $(this).data('id');
+                $.ajax({
+                    url: `/delete_other_memory/${memoryId}`,
+                    type: 'DELETE',
+                    success: function(response) {
+                        $('#responseMessage').text(response.message);
+                        $('#memoryDisplay').empty();
+                        setTimeout(function() {
+                            $('#responseMessage').text('');
+                        }, 3000); // 3000 milliseconds = 3 seconds
+                    },
+                    error: function(xhr, status, error) {
+                        $('#responseMessage').text('Error: ' + xhr.responseJSON.message);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

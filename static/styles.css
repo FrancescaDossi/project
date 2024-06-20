@@ -1,0 +1,358 @@
+
+
+/* styles.css */
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 50px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #8E94F2;
+}
+h2{
+    font-size: 30px;
+    font-family:'Times New Roman', Times, serif;
+    color: #8E94F2;
+
+}
+
+.grid {
+    width: 100%;
+    margin-top: 20px;
+
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Adjusted to include the new column */
+    grid-gap: 10px;
+    align-items: center;
+}
+
+
+
+
+.item {
+    border: 1px solid #ccc;
+    padding: 15px;
+    text-align: center;
+    font-size: 16px;
+}
+
+.header .item {
+    background-color: #BBADFF;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.input-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.input-row input[type="text"],
+.input-row button {
+    padding: 10px;
+    font-size: 16px;
+}
+
+.input-row input[type="text"] {
+    width: 100%;
+}
+
+.input-row button {
+    width: 100%;
+}
+
+
+
+.navbar {
+    width: 100%;
+    background-color: #BBADFF; /* Background color of the navbar */
+    overflow: hidden;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.navbar li {
+    display: inline;
+}
+
+.navbar a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color: #8E94F2; /* Hover color of the links */
+}
+
+#submitButton{
+    color:#8E94F2;
+}
+.description{
+    margin: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+
+}
+
+
+.button-container button:hover {
+    background-color: #8E94F2; /* Hover color */
+    color: white; /* Text color on hover */
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align items to the left */
+    margin-top: 20px;
+}
+
+.button-wrapper {
+    margin-left: 20px; /* Adjust margin between buttons */
+}
+
+.excuse-container {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px; /* Rounded corners */
+    width: 300px; /* Adjust the width as needed */
+    font-size: 18px;
+}
+.excuse {
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    margin-left: 0px; /* Adjust margin between excuses */
+}
+.container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.copyButton, .deleteButton1 {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 10px;
+    padding: 12px 20px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 2px solid #8E94F2; /* Border color */
+    background-color: transparent; /* Button background color */
+    color: #8E94f2; /* Button text color */
+
+}
+
+.copyButton:hover, .deleteButton:hover {
+    background-color: rgba(142, 148, 242, 0.1); /* Transparent background color on hover */
+}
+#workExcuseButton {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 10px;
+    padding: 12px 20px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 2px solid #8E94F2; /* Border color */
+    background-color: #BBADFF; /* Button background color */
+    color: white; /* Button text color */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+#gooutExcuseButton {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 10px;
+    padding: 12px 20px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 2px solid #8E94F2; /* Border color */
+    background-color: #BBADFF; /* Button background color */
+    color: white; /* Button text color */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#generateButton{
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 10px;
+    padding: 12px 20px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 2px solid #8E94F2; /* Border color */
+    background-color: #BBADFF; /* Button background color */
+    color: white; /* Button text color */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#checkButton{
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 10px;
+    padding: 12px 20px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 2px solid #8E94F2; /* Border color */
+    background-color: #BBADFF; /* Button background color */
+    color: white; /* Button text color */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#numberInput{
+    width: 100%;
+    max-width: 200px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 150px;
+    height: 18px;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 10px;
+    padding: 12px 20px;
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+
+
+/* Style for the buttons */
+#Happybutton, #Sadbutton {
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 2px solid #8E94F2; /* Border color */
+    background-color: #BBADFF; /* Button background color */
+    color: white; /* Button text color */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Optional: Style for the wrapper holding buttons */
+.button-wrapperm {
+    text-align: center;
+}
+.button-containerm {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 20px;
+    height: 100px;
+}
+#workmemoryButton, #othermemoryButton {
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 2px solid #8E94F2; /* Border color */
+    background-color: #BBADFF; /* Button background color */
+    color: white; /* Button text color */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#home {
+    background-image: url('images/backgroundlscew.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+.headline{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+
+input[type="text"], button {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 0px;
+    padding: 12px 20px;
+    margin: 10px 0;
+    font-size: 16px;
+    border: 2px solid #8E94F2; /* Border color */
+    background-color: white; /* Button background color */
+    color: black; /* Button text color */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#submitWorkMemoryButton, #submitOtherMemoryButton{
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 2px solid #8E94F2; /* Border color */
+    background-color: #BBADFF; /* Button background color */
+    color: white; /* Button text color */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#getWorkMemory, #getOtherMemory{
+    display: inline-block;
+    margin: 10px;
+    padding: 12px 20px;
+    font-size: 16px;
+    border: 2px solid #8E94F2; /* Border color */
+    background-color: #BBADFF; /* Button background color */
+    color: white; /* Button text color */
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.containerS {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+    max-width:600px;
+}
